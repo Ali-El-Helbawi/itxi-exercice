@@ -5,8 +5,17 @@
  * @format
  */
 
-import React, {useEffect, useRef} from 'react';
-import {Easing, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  ActivityIndicator,
+  Easing,
+  Linking,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {
   NavigationContainer,
@@ -23,9 +32,9 @@ import MainScreen from './src/screens/MainScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SetCompanyID from './src/screens/SetCompanyID';
 
-const RootApp = () => {
+const RootApp = props => {
   const OnboardingNav = createStackNavigator();
-
+  const initialRoutes = props?.initialRoutes ?? null;
   function OnBoardingStack() {
     return (
       <OnboardingNav.Navigator
@@ -79,7 +88,7 @@ const RootApp = () => {
   function MainStack() {
     return (
       <MainNav.Navigator
-        initialRouteName="MainScreen"
+        initialRouteName={initialRoutes?.main ?? 'MainScreen'}
         screenOptions={{headerShown: true}}>
         <MainNav.Screen
           name="MainScreen"
@@ -91,29 +100,20 @@ const RootApp = () => {
             headerBackTitleStyle: {display: 'none'},
           }}
         />
-      </MainNav.Navigator>
-    );
-  }
-
-  const SettingNav = createStackNavigator();
-
-  function SettingStack() {
-    return (
-      <SettingNav.Navigator
-        initialRouteName="SettingsScreen"
-        screenOptions={{
-          headerShown: true,
-          headerBackTitleStyle: {display: 'none'},
-          gestureEnabled: true,
-          gestureDirection: 'vertical',
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-        }}>
-        <SettingNav.Screen
+        <MainNav.Screen
           name="SettingsScreen"
           component={SettingsScreen}
-          options={{title: 'Settings', headerTitleAlign: 'center'}}
+          options={{
+            title: 'Settings',
+            headerTitleAlign: 'center',
+            headerShown: true,
+            headerBackTitleStyle: {display: 'none'},
+            gestureEnabled: true,
+            gestureDirection: 'vertical',
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          }}
         />
-        <SettingNav.Screen
+        <MainNav.Screen
           name="PickVoice"
           options={{
             title: 'Pick Voice',
@@ -131,8 +131,8 @@ const RootApp = () => {
               }}
             />
           )}
-        </SettingNav.Screen>
-        <SettingNav.Screen
+        </MainNav.Screen>
+        <MainNav.Screen
           name="SetCompanyID"
           component={SetCompanyID}
           options={{
@@ -143,7 +143,7 @@ const RootApp = () => {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
-        <SettingNav.Screen
+        <MainNav.Screen
           name="EnterCompanyID"
           options={{
             title: 'Enter Company ID',
@@ -159,15 +159,16 @@ const RootApp = () => {
               title="Go Back"
             />
           )}
-        </SettingNav.Screen>
-      </SettingNav.Navigator>
+        </MainNav.Screen>
+      </MainNav.Navigator>
     );
   }
+
   const RootStackNav = createStackNavigator();
 
   return (
     <RootStackNav.Navigator
-      initialRouteName="OnBoardingStack"
+      initialRouteName={initialRoutes?.initialRoute ?? 'OnBoardingStack'}
       screenOptions={{
         headerShown: false,
         headerBackTitle: '',
@@ -198,15 +199,6 @@ const RootApp = () => {
           },
         }}
       />
-      <RootStackNav.Screen
-        name="SettingStack"
-        component={SettingStack}
-        options={{
-          gestureEnabled: true,
-          gestureDirection: 'vertical',
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-        }}
-      />
     </RootStackNav.Navigator>
   );
 };
@@ -220,8 +212,62 @@ const App = () => {
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef(null);
   const pageRef = useRef(null);
+  const [initialRoutes, setInitialRoutes] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const getInitialURL = async () => {
+      const url = await Linking.getInitialURL();
+      let routeConfig = {};
+
+      if (url) {
+        const path = url.replace(/.*?:\/\//g, ''); // Remove the scheme (mydeeplinkapp://)
+        console.log('Deep Link Path:', path);
+
+        if (path.startsWith('main/settings/setCompanyID')) {
+          routeConfig.main = 'MainScreen';
+          routeConfig.initialRoute = 'MainStack';
+        }
+      }
+      console.log(routeConfig);
+
+      setInitialRoutes(routeConfig);
+      setLoading(false);
+    };
+
+    getInitialURL();
+  }, []);
+  const linking = {
+    prefixes: ['itxi://', 'https://www.itxi.net/'],
+    config: {
+      screens: {
+        OnBoardingStack: {
+          screens: {
+            WelcomeScreen: 'welcome',
+            EnterCompanyID: 'welcome/enterCompanyID',
+          },
+        },
+        MainStack: {
+          initialRouteName: 'MainScreen',
+          screens: {
+            MainScreen: 'main',
+            SettingsScreen: 'main/settings',
+            SetCompanyID: 'main/settings/setCompanyID',
+          },
+        },
+      },
+    },
+  };
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
   return (
     <NavigationContainer
+      linking={linking}
+      fallback={<Text>Loading...</Text>}
       ref={navigationRef}
       onReady={() => {
         routeNameRef.current = navigationRef.getCurrentRoute().name;
@@ -247,7 +293,7 @@ const App = () => {
           hidden={false}
           translucent={true}
         />
-        <RootApp />
+        <RootApp initialRoutes={initialRoutes} />
       </SafeAreaView>
     </NavigationContainer>
   );

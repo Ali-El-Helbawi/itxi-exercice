@@ -45,7 +45,7 @@ const MainScreen = props => {
         </View>
       </Modal>
       <Pressable
-        onPress={() => navigation.navigate('SettingStack')}
+        onPress={() => navigation.navigate('SettingsScreen')}
         style={{position: 'absolute', top: 0, left: 0}}>
         <Image
           source={require('../images/settings_icon.png')}
