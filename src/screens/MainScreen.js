@@ -20,7 +20,7 @@ const MainScreen = props => {
 
   return (
     <View style={Styles.container}>
-      <Pressable onPress={() => navigation.navigate('EnterCompanyID')}>
+      <Pressable onPress={() => navigation.navigate('SettingStack')}>
         <Image
           source={require('../images/settings_icon.png')}
           style={{width: 60, height: 60}}

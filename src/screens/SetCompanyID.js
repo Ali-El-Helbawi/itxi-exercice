@@ -1,12 +1,15 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
-const EnterCompanyID = props => {
-  const title = props?.title ?? '';
-  const onPress = props?.onPress ?? (() => {});
+const SetCompanyID = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={Styles.container}>
-      <Pressable style={Styles.button} onPress={onPress}>
-        <Text style={Styles.text}>{title}</Text>
+      <Pressable
+        style={Styles.button}
+        onPress={() => navigation.navigate('EnterCompanyID')}>
+        <Text style={Styles.text}>Go to Enter Company ID</Text>
       </Pressable>
     </View>
   );
@@ -29,4 +32,4 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default EnterCompanyID;
+export default SetCompanyID;

@@ -20,6 +20,8 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import EnterCompanyID from './src/screens/EnterCompanyID';
 import PickVoice from './src/screens/PickVoice';
 import MainScreen from './src/screens/MainScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import SetCompanyID from './src/screens/SetCompanyID';
 
 const RootApp = () => {
   const OnboardingNav = createStackNavigator();
@@ -28,26 +30,48 @@ const RootApp = () => {
     return (
       <OnboardingNav.Navigator
         initialRouteName="WelcomeScreen"
-        screenOptions={{headerShown: true}}>
+        screenOptions={{
+          headerShown: true,
+          headerBackTitleStyle: {display: 'none'},
+        }}>
         <OnboardingNav.Screen
           name="WelcomeScreen"
           component={WelcomeScreen}
           options={{title: 'Welcome', headerTitleAlign: 'center'}}
         />
+
         <OnboardingNav.Screen
           name="EnterCompanyID"
-          component={EnterCompanyID}
-          options={{title: 'Enter Company ID', headerTitleAlign: 'center'}}
-        />
+          options={{title: 'Enter Company ID', headerTitleAlign: 'center'}}>
+          {props => (
+            <EnterCompanyID
+              {...props}
+              onPress={() => props.navigation.navigate('PickVoice')}
+              title="Continue"
+            />
+          )}
+        </OnboardingNav.Screen>
         <OnboardingNav.Screen
           name="PickVoice"
-          component={PickVoice}
           options={{
             title: 'Pick Voice',
             headerTitleAlign: 'center',
             presentation: 'card',
-          }}
-        />
+          }}>
+          {props => (
+            <PickVoice
+              {...props}
+              onDismiss={() => {
+                console.log('onDismiss');
+
+                props.navigation.navigate('MainStack', {
+                  screen: 'MainScreen',
+                  params: {resetStack: true},
+                });
+              }}
+            />
+          )}
+        </OnboardingNav.Screen>
       </OnboardingNav.Navigator>
     );
   }
@@ -64,9 +88,79 @@ const RootApp = () => {
             title: 'Main Screen',
             headerTitleAlign: 'center',
             headerLeft: () => null,
+            headerBackTitleStyle: {display: 'none'},
           }}
         />
       </MainNav.Navigator>
+    );
+  }
+
+  const SettingNav = createStackNavigator();
+
+  function SettingStack() {
+    return (
+      <SettingNav.Navigator
+        initialRouteName="SettingsScreen"
+        screenOptions={{
+          headerShown: true,
+          headerBackTitleStyle: {display: 'none'},
+          gestureEnabled: true,
+          gestureDirection: 'vertical',
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+        }}>
+        <SettingNav.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
+          options={{title: 'Settings', headerTitleAlign: 'center'}}
+        />
+        <SettingNav.Screen
+          name="PickVoice"
+          options={{
+            title: 'Pick Voice',
+            headerTitleAlign: 'center',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}>
+          {props => (
+            <PickVoice
+              {...props}
+              onDismiss={() => {
+                console.log('onDismiss');
+                props.navigation.goBack();
+              }}
+            />
+          )}
+        </SettingNav.Screen>
+        <SettingNav.Screen
+          name="SetCompanyID"
+          component={SetCompanyID}
+          options={{
+            title: 'Set Company ID',
+            headerTitleAlign: 'center',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <SettingNav.Screen
+          name="EnterCompanyID"
+          options={{
+            title: 'Enter Company ID',
+            headerTitleAlign: 'center',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}>
+          {props => (
+            <EnterCompanyID
+              {...props}
+              onPress={() => props.navigation.goBack()}
+              title="Go Back"
+            />
+          )}
+        </SettingNav.Screen>
+      </SettingNav.Navigator>
     );
   }
   const RootStackNav = createStackNavigator();
@@ -74,7 +168,10 @@ const RootApp = () => {
   return (
     <RootStackNav.Navigator
       initialRouteName="OnBoardingStack"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{
+        headerShown: false,
+        headerBackTitle: '',
+      }}>
       <RootStackNav.Screen name="OnBoardingStack" component={OnBoardingStack} />
       <RootStackNav.Screen
         name="MainStack"
@@ -99,6 +196,15 @@ const RootApp = () => {
               },
             },
           },
+        }}
+      />
+      <RootStackNav.Screen
+        name="SettingStack"
+        component={SettingStack}
+        options={{
+          gestureEnabled: true,
+          gestureDirection: 'vertical',
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
         }}
       />
     </RootStackNav.Navigator>

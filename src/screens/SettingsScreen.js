@@ -1,17 +1,20 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
+const SettingsScreen = () => {
+  const navigation = useNavigation();
 
-const PickVoice = props => {
-  const onDismiss = props?.onDismiss ?? (() => {});
   return (
-    <View style={[Styles.container]}>
+    <View style={Styles.container}>
       <Pressable
         style={Styles.button}
-        onPress={() => {
-          onDismiss();
-        }}>
-        <Text style={Styles.text}>Dismiss</Text>
+        onPress={() => navigation.navigate('PickVoice')}>
+        <Text style={Styles.text}>Go to pick voice screen</Text>
+      </Pressable>
+      <Pressable
+        style={Styles.button}
+        onPress={() => navigation.navigate('SetCompanyID')}>
+        <Text style={Styles.text}>Go to Set Company ID screen</Text>
       </Pressable>
     </View>
   );
@@ -27,11 +30,14 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 20,
     borderRadius: 15,
+    marginVertical: 30,
+    width: '80%',
   },
   text: {
     color: 'white',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
-export default PickVoice;
+export default SettingsScreen;
