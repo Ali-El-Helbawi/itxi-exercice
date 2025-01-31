@@ -5,10 +5,13 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Easing, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -60,6 +63,7 @@ const RootApp = () => {
           options={{
             title: 'Main Screen',
             headerTitleAlign: 'center',
+            headerLeft: () => null,
           }}
         />
       </MainNav.Navigator>
@@ -107,9 +111,27 @@ const App = () => {
       SplashScreen.hide();
     }, 3000);
   }, []);
-
+  const navigationRef = useNavigationContainerRef();
+  const routeNameRef = useRef(null);
+  const pageRef = useRef(null);
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.getCurrentRoute().name;
+        pageRef.current = routeNameRef.current;
+      }}
+      onStateChange={() => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+          routeNameRef.current = currentRouteName;
+
+          pageRef.current = currentRouteName;
+          console.log(currentRouteName);
+        }
+      }}>
       <SafeAreaView style={styles.container}>
         <StatusBar
           animated={true}
