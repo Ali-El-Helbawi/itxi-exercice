@@ -237,7 +237,7 @@ const App = () => {
     getInitialURL();
   }, []);
   const linking = {
-    prefixes: ['itxi://', 'https://www.itxi.net/'],
+    prefixes: ['itxi://'],
     config: {
       screens: {
         OnBoardingStack: {
