@@ -31,6 +31,7 @@ import PickVoice from './src/screens/PickVoice';
 import MainScreen from './src/screens/MainScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SetCompanyID from './src/screens/SetCompanyID';
+import {MainColor, SecondaryColor} from './src/values';
 
 const RootApp = props => {
   const OnboardingNav = createStackNavigator();
@@ -42,6 +43,13 @@ const RootApp = props => {
         screenOptions={{
           headerShown: true,
           headerBackTitleStyle: {display: 'none'},
+          headerTintColor: SecondaryColor,
+          headerStyle: {backgroundColor: MainColor},
+          headerTitleStyle: {
+            color: SecondaryColor,
+            fontSize: 24,
+            fontWeight: 'bold',
+          },
         }}>
         <OnboardingNav.Screen
           name="WelcomeScreen"
@@ -89,7 +97,18 @@ const RootApp = props => {
     return (
       <MainNav.Navigator
         initialRouteName={initialRoutes?.main ?? 'MainScreen'}
-        screenOptions={{headerShown: true}}>
+        screenOptions={{
+          headerShown: true,
+          headerTintColor: SecondaryColor,
+          headerBackTitleStyle: {display: 'none'},
+
+          headerStyle: {backgroundColor: MainColor},
+          headerTitleStyle: {
+            color: SecondaryColor,
+            fontSize: 24,
+            fontWeight: 'bold',
+          },
+        }}>
         <MainNav.Screen
           name="MainScreen"
           component={MainScreen}
@@ -97,7 +116,6 @@ const RootApp = props => {
             title: 'Main Screen',
             headerTitleAlign: 'center',
             headerLeft: () => null,
-            headerBackTitleStyle: {display: 'none'},
           }}
         />
         <MainNav.Screen
@@ -172,6 +190,7 @@ const RootApp = props => {
       screenOptions={{
         headerShown: false,
         headerBackTitle: '',
+        headerStyle: {backgroundColor: MainColor},
       }}>
       <RootStackNav.Screen name="OnBoardingStack" component={OnBoardingStack} />
       <RootStackNav.Screen
@@ -301,6 +320,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: MainColor,
   },
 });
 export default App;

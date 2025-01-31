@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {MainColor, SecondaryColor} from '../values';
 const SettingsScreen = () => {
   const navigation = useNavigation();
 
@@ -24,17 +25,18 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: SecondaryColor,
   },
   button: {
-    backgroundColor: 'blue',
-    paddingHorizontal: 30,
+    backgroundColor: MainColor,
+    paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 15,
     marginVertical: 30,
     width: '80%',
   },
   text: {
-    color: 'white',
+    color: SecondaryColor,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',

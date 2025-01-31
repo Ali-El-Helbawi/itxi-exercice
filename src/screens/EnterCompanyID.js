@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {MainColor, SecondaryColor} from '../values';
 const EnterCompanyID = props => {
   const title = props?.title ?? '';
   const onPress = props?.onPress ?? (() => {});
@@ -16,15 +17,16 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: SecondaryColor,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: MainColor,
     paddingHorizontal: 30,
     paddingVertical: 20,
     borderRadius: 15,
   },
   text: {
-    color: 'white',
+    color: SecondaryColor,
     fontSize: 24,
     fontWeight: 'bold',
   },

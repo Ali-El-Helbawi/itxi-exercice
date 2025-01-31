@@ -1,6 +1,7 @@
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {View, Text, Pressable, StyleSheet, Image, Modal} from 'react-native';
+import {AccentColor, MainColor, SecondaryColor} from '../values';
 const MainScreen = props => {
   const navigation = useNavigation();
   const resetStackVal = props?.route?.params?.resetStack || false;
@@ -29,27 +30,36 @@ const MainScreen = props => {
         onRequestClose={() => {
           setShowModal(!showModal);
         }}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={Styles.modalContainer}>
           <Pressable
             onPress={() => {
               setShowModal(false);
             }}
-            style={{position: 'absolute', top: 50, right: 0}}>
+            style={{position: 'absolute', top: 50, right: 0, zIndex: 1}}>
             <Image
               source={require('../images/close_icon.png')}
-              style={{width: 60, height: 60}}
+              style={{
+                width: 60,
+                height: 60,
+                resizeMode: 'contain',
+              }}
               resizeMode="contain"
             />
           </Pressable>
-          <Text style={[Styles.text, {color: '#000'}]}>Voice bot screen</Text>
+          <Text style={[Styles.text, {color: MainColor}]}>
+            Voice bot screen
+          </Text>
         </View>
       </Modal>
       <Pressable
         onPress={() => navigation.navigate('SettingsScreen')}
-        style={{position: 'absolute', top: 0, left: 0}}>
+        style={{position: 'absolute', top: 0, left: 0, zIndex: 1}}>
         <Image
           source={require('../images/settings_icon.png')}
-          style={{width: 60, height: 60}}
+          style={{
+            width: 60,
+            height: 60,
+          }}
           resizeMode="contain"
         />
       </Pressable>
@@ -66,22 +76,30 @@ const MainScreen = props => {
   );
 };
 const Styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: SecondaryColor,
+  },
   container: {
     flex: 1,
+    backgroundColor: SecondaryColor,
   },
   subContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: SecondaryColor,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: MainColor,
     paddingHorizontal: 30,
     paddingVertical: 20,
     borderRadius: 15,
   },
   text: {
-    color: 'white',
+    color: SecondaryColor,
     fontSize: 24,
     fontWeight: 'bold',
   },

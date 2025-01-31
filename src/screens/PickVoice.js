@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {MainColor, SecondaryColor} from '../values';
 
 const PickVoice = props => {
   const onDismiss = props?.onDismiss ?? (() => {});
@@ -21,15 +22,16 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: SecondaryColor,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: MainColor,
     paddingHorizontal: 30,
     paddingVertical: 20,
     borderRadius: 15,
   },
   text: {
-    color: 'white',
+    color: SecondaryColor,
     fontSize: 24,
     fontWeight: 'bold',
   },
