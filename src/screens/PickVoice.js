@@ -1,15 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
-const EnterCompanyID = () => {
-  const navigation = useNavigation();
+import React, {useState} from 'react';
+import {View, Text, Pressable, StyleSheet, Alert, Modal} from 'react-native';
 
+const PickVoice = () => {
+  const navigation = useNavigation();
   return (
-    <View style={Styles.container}>
+    <View style={[Styles.container]}>
       <Pressable
         style={Styles.button}
-        onPress={() => navigation.navigate('PickVoice')}>
-        <Text style={Styles.text}>Continue</Text>
+        onPress={() => {
+          navigation.navigate('MainStack');
+        }}>
+        <Text style={Styles.text}>Dismiss</Text>
       </Pressable>
     </View>
   );
@@ -32,4 +34,4 @@ const Styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default EnterCompanyID;
+export default PickVoice;
