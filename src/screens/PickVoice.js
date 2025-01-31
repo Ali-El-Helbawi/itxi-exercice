@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {View, Text, Pressable, StyleSheet, Alert, Modal} from 'react-native';
+import React from 'react';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 
 const PickVoice = () => {
   const navigation = useNavigation();
@@ -9,7 +9,10 @@ const PickVoice = () => {
       <Pressable
         style={Styles.button}
         onPress={() => {
-          navigation.navigate('MainStack');
+          navigation.navigate('MainStack', {
+            screen: 'MainScreen',
+            params: {resetStack: true},
+          });
         }}>
         <Text style={Styles.text}>Dismiss</Text>
       </Pressable>
