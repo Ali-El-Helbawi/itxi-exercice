@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -28,6 +28,7 @@ import {
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+import SplashScreen from 'react-native-splash-screen';
 
 function Section({children, title}: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -56,6 +57,11 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 3000);
+  }, []);
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
